@@ -68,7 +68,7 @@ static VALUE rb_sqlite3_open_v2(VALUE self, VALUE file, VALUE mode, VALUE zvfs)
 
 static VALUE rb_sqlite3_disable_quirk_mode(VALUE self)
 {
-#if defined SQLITE_DBCONFIG_DQS_DDL
+#if defined(SQLITE_DBCONFIG_DQS_DDL) && !defined(SQLITE_RB_DISABLE_STRICT_MODE)
   sqlite3RubyPtr ctx;
   Data_Get_Struct(self, sqlite3Ruby, ctx);
 

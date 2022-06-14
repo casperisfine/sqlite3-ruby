@@ -40,6 +40,32 @@ jobs:
       - name: test
         run:  bundle exec rake test
 
+  CI_no_strict_mode:
+    timeout-minutes: 10
+    name: >-
+      CI ${{ matrix.os }} ${{ matrix.ruby }}
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu, macos ]
+        ruby: [ 3.1 ]
+    env:
+      SQLITE_DISABLE_STRICT_MODE: "1"
+    steps:
+      - uses: actions/checkout@v3
+      - name: load Ruby and dependencies
+        uses: MSP-Greg/setup-ruby-pkgs@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          apt-get: libsqlite3-dev
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+
+      - name: compile
+        run:  bundle exec rake compile
+      - name: test
+        run:  bundle exec rake test
+
   Win:
     timeout-minutes: 10
     name: >-

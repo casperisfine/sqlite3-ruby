@@ -51,6 +51,10 @@ if RUBY_VERSION < '2.7'
   $CFLAGS << ' -DTAINTING_SUPPORT'
 end
 
+if ENV["SQLITE_DISABLE_STRICT_MODE"]
+  $CFLAGS << ' -DSQLITE_RB_DISABLE_STRICT_MODE'
+end
+
 def asplode missing
   if RUBY_PLATFORM =~ /mingw|mswin/
     abort "#{missing} is missing. Install SQLite3 from " +
